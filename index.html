@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pasatiempos y Juegos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #000000;
+      color: #e8e8f0;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    /* ── STARS ── */
+    canvas#stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 40px;
+      gap: 0;
+    }
+
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      color: #fff;
+      letter-spacing: 0.03em;
+      margin-bottom: clamp(10px, 2vh, 22px);
+      text-align: center;
+    }
+    h1 span { color: #a78bfa; }
+
+    /* ── LIST ── */
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2px, 1vh, 10px);
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 2vw, 22px);
+      text-decoration: none;
+      color: #e8e8f0;
+      padding: clamp(4px, 0.8vh, 10px) clamp(10px, 2vw, 20px);
+      border-radius: 14px;
+      border: 1px solid transparent;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+    .item:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--c, #a78bfa);
+      transform: translateX(6px);
+    }
+
+    .icon {
+      width: clamp(36px, 5vw, 52px);
+      height: clamp(36px, 5vw, 52px);
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 6px var(--c, #a78bfa));
+    }
+
+    .name {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(0.95rem, 2vw, 1.25rem);
+      letter-spacing: 0.01em;
+      color: #fff;
+    }
+
+    .arrow {
+      margin-left: auto;
+      font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+      color: var(--c, #a78bfa);
+      opacity: 0;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .item:hover .arrow { opacity: 1; transform: translateX(4px); }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page">
+  <h1>Pasatiempos <span>&amp;</span> Juegos</h1>
+
+  <nav class="list">
+
+    <!-- 1. PUZZLE -->
+    <a class="item" href="https://puzzleluis.vercel.app" target="_blank" style="--c:#f59e0b">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="4" y="4" width="18" height="18" rx="3" fill="#f59e0b"/>
+        <circle cx="13" cy="22" r="4" fill="#000000"/>
+        <circle cx="22" cy="13" r="4" fill="#f59e0b"/>
+        <rect x="26" y="4" width="18" height="18" rx="3" fill="#fbbf24"/>
+        <circle cx="26" cy="13" r="4" fill="#000000"/>
+        <rect x="4" y="26" width="18" height="18" rx="3" fill="#fcd34d"/>
+        <circle cx="13" cy="26" r="4" fill="#000000"/>
+        <circle cx="22" cy="37" r="4" fill="#fcd34d"/>
+        <rect x="26" y="26" width="18" height="18" rx="3" fill="#f59e0b"/>
+        <circle cx="26" cy="37" r="4" fill="#000000"/>
+      </svg>
+      <span class="name">Puzzle de Fotos</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 2. HANOI -->
+    <a class="item" href="https://hanoiluis.vercel.app" target="_blank" style="--c:#34d399">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="4" y="46" width="44" height="4" rx="2" fill="#34d399"/>
+        <rect x="23" y="10" width="6" height="36" rx="3" fill="#6ee7b7"/>
+        <rect x="8"  y="40" width="36" height="6" rx="3" fill="#34d399"/>
+        <rect x="13" y="32" width="26" height="6" rx="3" fill="#6ee7b7"/>
+        <rect x="18" y="24" width="16" height="6" rx="3" fill="#a7f3d0"/>
+        <rect x="21" y="16" width="10" height="6" rx="3" fill="#d1fae5"/>
+      </svg>
+      <span class="name">Torres de Hanoi</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 3. SNAKE -->
+    <a class="item" href="https://snakeluis.vercel.app" target="_blank" style="--c:#4ade80">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="6"  y="34" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="18" y="34" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="30" y="34" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="30" y="22" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="30" y="10" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="18" y="10" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="6"  y="10" width="10" height="10" rx="2.5" fill="#86efac"/>
+        <circle cx="9"  cy="13" r="1.8" fill="#000000"/>
+        <circle cx="13" cy="13" r="1.8" fill="#000000"/>
+        <line x1="11" y1="20" x2="11" y2="24" stroke="#f87171" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="9"  y1="24" x2="11" y2="22" stroke="#f87171" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="13" y1="24" x2="11" y2="22" stroke="#f87171" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="44" cy="14" r="6" fill="#111" stroke="#f87171" stroke-width="1.8"/>
+        <line x1="44" y1="8" x2="47" y2="5" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="48" cy="4" r="1.5" fill="#fbbf24"/>
+        <text x="41" y="17" font-size="7" fill="#f87171" font-weight="bold">!</text>
+      </svg>
+      <span class="name">Snake</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 4. COMECOCOS -->
+    <a class="item" href="https://cometelos.vercel.app" target="_blank" style="--c:#facc15">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <path d="M26 26 L46 17 A22 22 0 1 0 46 35 Z" fill="#facc15"/>
+        <circle cx="28" cy="14" r="2.5" fill="#000000"/>
+        <circle cx="8"  cy="38" r="2.2" fill="#fff" opacity="0.9"/>
+        <circle cx="16" cy="32" r="2.2" fill="#fff" opacity="0.9"/>
+        <circle cx="26" cy="38" r="2.2" fill="#fff" opacity="0.9"/>
+        <path d="M38 32 Q38 25 44 25 Q50 25 50 32 L50 44 L48 42 L45 44 L42 42 L39 44 L38 42 Z" fill="#f87171"/>
+        <circle cx="42" cy="31" r="2" fill="#fff"/>
+        <circle cx="46" cy="31" r="2" fill="#fff"/>
+        <circle cx="42.8" cy="31.8" r="0.9" fill="#1e40af"/>
+        <circle cx="46.8" cy="31.8" r="0.9" fill="#1e40af"/>
+      </svg>
+      <span class="name">Comecocos</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 5. COMECOCOS TÚNELES — mismo icono + texto TÚNELES -->
+    <a class="item" href="https://comecocostuneles.vercel.app" target="_blank" style="--c:#a78bfa">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <path d="M26 26 L46 17 A22 22 0 1 0 46 35 Z" fill="#facc15"/>
+        <circle cx="28" cy="14" r="2.5" fill="#000000"/>
+        <circle cx="8"  cy="38" r="2.2" fill="#fff" opacity="0.9"/>
+        <circle cx="16" cy="32" r="2.2" fill="#fff" opacity="0.9"/>
+        <circle cx="26" cy="38" r="2.2" fill="#fff" opacity="0.9"/>
+        <path d="M38 32 Q38 25 44 25 Q50 25 50 32 L50 44 L48 42 L45 44 L42 42 L39 44 L38 42 Z" fill="#f87171"/>
+        <circle cx="42" cy="31" r="2" fill="#fff"/>
+        <circle cx="46" cy="31" r="2" fill="#fff"/>
+        <circle cx="42.8" cy="31.8" r="0.9" fill="#1e40af"/>
+        <circle cx="46.8" cy="31.8" r="0.9" fill="#1e40af"/>
+        <!-- TÚNELES label -->
+        <rect x="0" y="44" width="52" height="8" rx="2" fill="#000000" opacity="0.7"/>
+        <text x="26" y="51" font-size="6.5" fill="#a78bfa" font-family="'Fredoka One',cursive" font-weight="bold" text-anchor="middle" letter-spacing="0.5">TÚNELES</text>
+      </svg>
+      <span class="name">Comecocos con Túneles</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 6. CAÑÓN DE PÁJAROS -->
+    <a class="item" href="https://pajaros.vercel.app" target="_blank" style="--c:#fb923c">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <!-- night sky bg subtle -->
+        <!-- cannon base/mount -->
+        <rect x="18" y="36" width="16" height="10" rx="4" fill="#3b2a1a"/>
+        <!-- cannon barrel pointing up-right -->
+        <rect x="22" y="10" width="8" height="28" rx="4" fill="#5c3d1e" transform="rotate(-20 26 26)"/>
+        <!-- bird pink on tip of barrel -->
+        <!-- barrel tip is roughly at (34,10) after rotation — place bird there -->
+        <ellipse cx="36" cy="9" rx="7" ry="5" fill="#f472b6"/>
+        <circle cx="40" cy="7.5" r="2" fill="#000000"/>
+        <circle cx="40.6" cy="7" r="0.9" fill="#fff"/>
+        <!-- beak -->
+        <polygon points="42,9 45,8 42,11" fill="#fbbf24"/>
+        <!-- wing -->
+        <ellipse cx="33" cy="8" rx="4" ry="2.5" fill="#f9a8d4" transform="rotate(-15 33 8)"/>
+        <!-- trajectory dots going up -->
+        <circle cx="38" cy="18" r="1.2" fill="#fb923c" opacity="0.7"/>
+        <circle cx="40" cy="13" r="1" fill="#fb923c" opacity="0.5"/>
+        <!-- ground -->
+        <rect x="0" y="46" width="52" height="4" rx="2" fill="#1a0e06"/>
+      </svg>
+      <span class="name">Cañón de Pájaros</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 7. ARKANOID -->
+    <a class="item" href="https://arkanoidluis.vercel.app" target="_blank" style="--c:#38bdf8">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="2"  y="4"  width="14" height="6" rx="2" fill="#f87171"/>
+        <rect x="18" y="4"  width="14" height="6" rx="2" fill="#fb923c"/>
+        <rect x="34" y="4"  width="16" height="6" rx="2" fill="#facc15"/>
+        <rect x="2"  y="12" width="14" height="6" rx="2" fill="#4ade80"/>
+        <rect x="18" y="12" width="14" height="6" rx="2" fill="#38bdf8"/>
+        <rect x="34" y="12" width="16" height="6" rx="2" fill="#a78bfa"/>
+        <rect x="2"  y="20" width="14" height="6" rx="2" fill="#fb923c"/>
+        <rect x="18" y="20" width="14" height="6" rx="2" fill="#f87171"/>
+        <rect x="34" y="20" width="16" height="6" rx="2" fill="#4ade80"/>
+        <circle cx="28" cy="36" r="5" fill="#fff"/>
+        <line x1="28" y1="31" x2="28" y2="28" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <rect x="12" y="44" width="28" height="6" rx="3" fill="#38bdf8"/>
+      </svg>
+      <span class="name">Arkanoid</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 8. PONG -->
+    <a class="item" href="https://arcade-blond.vercel.app" target="_blank" style="--c:#f472b6">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="2" y="2" width="48" height="48" rx="5" fill="#0a0a1a" stroke="#f472b6" stroke-width="1.5"/>
+        <line x1="26" y1="5" x2="26" y2="47" stroke="#f472b6" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.5"/>
+        <rect x="5"  y="16" width="5" height="18" rx="2.5" fill="#f472b6"/>
+        <rect x="42" y="20" width="5" height="18" rx="2.5" fill="#818cf8"/>
+        <circle cx="26" cy="26" r="4" fill="#fff"/>
+        <path d="M18 10 Q26 5 34 10" stroke="#4ade80" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M21 14 Q26 10 31 14" stroke="#4ade80" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <circle cx="26" cy="17" r="1.5" fill="#4ade80"/>
+      </svg>
+      <span class="name">Pong Multijugador</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 9. SPACE INVADERS -->
+    <a class="item" href="https://spaceinvaders-zeta.vercel.app" target="_blank" style="--c:#818cf8">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <!-- alien row -->
+        <rect x="4"  y="4" width="10" height="8" rx="2" fill="#818cf8"/>
+        <rect x="2"  y="7" width="3" height="3" rx="1" fill="#818cf8"/>
+        <rect x="14" y="7" width="3" height="3" rx="1" fill="#818cf8"/>
+        <rect x="4"  y="12" width="3" height="3" rx="1" fill="#818cf8"/>
+        <rect x="11" y="12" width="3" height="3" rx="1" fill="#818cf8"/>
+        <circle cx="7.5"  cy="8.5" r="1.3" fill="#000000"/>
+        <circle cx="10.5" cy="8.5" r="1.3" fill="#000000"/>
+
+        <rect x="21" y="4" width="10" height="8" rx="2" fill="#a78bfa"/>
+        <rect x="19" y="7" width="3" height="3" rx="1" fill="#a78bfa"/>
+        <rect x="31" y="7" width="3" height="3" rx="1" fill="#a78bfa"/>
+        <rect x="21" y="12" width="3" height="3" rx="1" fill="#a78bfa"/>
+        <rect x="28" y="12" width="3" height="3" rx="1" fill="#a78bfa"/>
+        <circle cx="24.5" cy="8.5" r="1.3" fill="#000000"/>
+        <circle cx="27.5" cy="8.5" r="1.3" fill="#000000"/>
+
+        <rect x="38" y="4" width="10" height="8" rx="2" fill="#c4b5fd"/>
+        <rect x="36" y="7" width="3" height="3" rx="1" fill="#c4b5fd"/>
+        <rect x="48" y="7" width="3" height="3" rx="1" fill="#c4b5fd"/>
+        <rect x="38" y="12" width="3" height="3" rx="1" fill="#c4b5fd"/>
+        <rect x="45" y="12" width="3" height="3" rx="1" fill="#c4b5fd"/>
+        <circle cx="41.5" cy="8.5" r="1.3" fill="#000000"/>
+        <circle cx="44.5" cy="8.5" r="1.3" fill="#000000"/>
+
+        <!-- alien laser -->
+        <rect x="25" y="18" width="2" height="7" rx="1" fill="#f87171"/>
+
+        <!-- ship -->
+        <path d="M20 46 L26 36 L32 46 Z" fill="#38bdf8"/>
+        <rect x="22" y="42" width="8" height="5" rx="2" fill="#38bdf8"/>
+        <circle cx="26" cy="40" r="3" fill="#7dd3fc"/>
+        <!-- ship laser -->
+        <rect x="25" y="28" width="2" height="8" rx="1" fill="#4ade80"/>
+      </svg>
+      <span class="name">Space Invaders</span>
+      <span class="arrow">→</span>
+    </a>
+
+  </nav>
+</div>
+
+<script>
+  // Starfield
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 160; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.4 + 0.3,
+        a: Math.random() * 0.7 + 0.2,
+        speed: Math.random() * 0.3 + 0.05
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.speed * 0.02;
+      const alpha = 0.2 + Math.abs(Math.sin(s.a)) * 0.7;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initStars();
+  draw();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+</script>
+
+</body>
+</html>
