@@ -15,7 +15,6 @@
       font-family: 'Nunito', sans-serif;
     }
 
-    /* ── STARS ── */
     canvas#stars {
       position: fixed;
       inset: 0;
@@ -23,7 +22,6 @@
       pointer-events: none;
     }
 
-    /* ── LAYOUT ── */
     .page {
       position: relative;
       z-index: 1;
@@ -46,7 +44,6 @@
     }
     h1 span { color: #a78bfa; }
 
-    /* ── LIST ── */
     .list {
       display: flex;
       flex-direction: column;
@@ -96,7 +93,6 @@
     .item:hover .arrow { opacity: 1; transform: translateX(4px); }
   </style>
 
-  <!-- Icono pantalla inicio -->
   <link rel="apple-touch-icon" href="/icons/icon-apple-180.png"/>
   <link rel="manifest" href="/manifest.json"/>
   <meta name="theme-color" content="#000000"/>
@@ -116,17 +112,11 @@
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <defs><clipPath id="pc"><rect x="0" y="0" width="52" height="52"/></clipPath></defs>
         <g clip-path="url(#pc)">
-          <!-- cuerpo de la ficha centrado -->
           <rect x="8" y="8" width="30" height="30" rx="4" fill="#f59e0b"/>
-          <!-- protuberancia arriba (centro superior) -->
           <circle cx="23" cy="8" r="6" fill="#f59e0b"/>
-          <!-- muesca izquierda (hueco hacia dentro) -->
           <circle cx="8" cy="23" r="5.5" fill="#000000"/>
-          <!-- protuberancia derecha -->
           <circle cx="38" cy="23" r="6" fill="#f59e0b"/>
-          <!-- protuberancia abajo -->
           <circle cx="23" cy="38" r="6" fill="#f59e0b"/>
-          <!-- brillo interior -->
           <rect x="14" y="14" width="18" height="18" rx="3" fill="#fbbf24" opacity="0.45"/>
         </g>
       </svg>
@@ -203,7 +193,6 @@
         <circle cx="46" cy="31" r="2" fill="#fff"/>
         <circle cx="42.8" cy="31.8" r="0.9" fill="#1e40af"/>
         <circle cx="46.8" cy="31.8" r="0.9" fill="#1e40af"/>
-        <!-- TÚNELES label -->
         <rect x="0" y="44" width="52" height="8" rx="2" fill="#000000" opacity="0.7"/>
         <text x="26" y="51" font-size="6.5" fill="#a78bfa" font-family="'Fredoka One',cursive" font-weight="bold" text-anchor="middle" letter-spacing="0.5">TÚNELES</text>
       </svg>
@@ -214,17 +203,12 @@
     <!-- 6. CAÑÓN DE PÁJAROS -->
     <a class="item" href="https://pajaros.vercel.app" target="_blank" style="--c:#fb923c">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
-        <!-- suelo -->
         <rect x="0" y="46" width="52" height="4" rx="2" fill="#1a0e06"/>
-        <!-- base grande del cañón -->
         <circle cx="26" cy="40" r="10" fill="#3b2a1a"/>
-        <!-- barril corto, sale del centro de la base -->
         <rect x="22" y="20" width="8" height="20" rx="4" fill="#5c3d1e" transform="rotate(-20 26 40)"/>
-        <!-- disparo naranja saliendo del cañón -->
         <circle cx="34" cy="14" r="3.5" fill="#fb923c"/>
         <circle cx="38" cy="9"  r="2.5" fill="#fb923c" opacity="0.7"/>
         <circle cx="41" cy="5"  r="1.5" fill="#fb923c" opacity="0.4"/>
-        <!-- pájaro rosa en el aire -->
         <ellipse cx="14" cy="10" rx="7" ry="5" fill="#f472b6"/>
         <circle cx="18" cy="8.5" r="2" fill="#000000"/>
         <circle cx="18.6" cy="8" r="0.9" fill="#fff"/>
@@ -281,7 +265,6 @@
         <rect x="11" y="12" width="3" height="3" rx="1" fill="#818cf8"/>
         <circle cx="7.5"  cy="8.5" r="1.3" fill="#000000"/>
         <circle cx="10.5" cy="8.5" r="1.3" fill="#000000"/>
-
         <rect x="21" y="4" width="10" height="8" rx="2" fill="#a78bfa"/>
         <rect x="19" y="7" width="3" height="3" rx="1" fill="#a78bfa"/>
         <rect x="31" y="7" width="3" height="3" rx="1" fill="#a78bfa"/>
@@ -289,7 +272,6 @@
         <rect x="28" y="12" width="3" height="3" rx="1" fill="#a78bfa"/>
         <circle cx="24.5" cy="8.5" r="1.3" fill="#000000"/>
         <circle cx="27.5" cy="8.5" r="1.3" fill="#000000"/>
-
         <rect x="38" y="4" width="10" height="8" rx="2" fill="#c4b5fd"/>
         <rect x="36" y="7" width="3" height="3" rx="1" fill="#c4b5fd"/>
         <rect x="48" y="7" width="3" height="3" rx="1" fill="#c4b5fd"/>
@@ -297,9 +279,7 @@
         <rect x="45" y="12" width="3" height="3" rx="1" fill="#c4b5fd"/>
         <circle cx="41.5" cy="8.5" r="1.3" fill="#000000"/>
         <circle cx="44.5" cy="8.5" r="1.3" fill="#000000"/>
-
         <rect x="25" y="18" width="2" height="7" rx="1" fill="#f87171"/>
-
         <path d="M20 46 L26 36 L32 46 Z" fill="#38bdf8"/>
         <rect x="22" y="42" width="8" height="5" rx="2" fill="#38bdf8"/>
         <circle cx="26" cy="40" r="3" fill="#7dd3fc"/>
@@ -309,11 +289,46 @@
       <span class="arrow">→</span>
     </a>
 
+    <!-- 10. DYNABLASTER -->
+    <a class="item" href="https://dynabomber.vercel.app/" target="_blank" style="--c:#ff6a00">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <!-- CASCO blanco -->
+        <ellipse cx="26" cy="13" rx="10" ry="9" fill="#ffffff"/>
+        <!-- visera naranja -->
+        <rect x="18" y="17" width="16" height="5" rx="1" fill="#ff6a00"/>
+        <!-- cara (piel) -->
+        <rect x="20" y="19" width="12" height="7" rx="1" fill="#f5c98a"/>
+        <!-- ojos -->
+        <rect x="22" y="21" width="3" height="3" rx="0.5" fill="#1a1a2e"/>
+        <rect x="28" y="21" width="3" height="3" rx="0.5" fill="#1a1a2e"/>
+        <!-- CUERPO azul claro -->
+        <rect x="18" y="26" width="16" height="10" rx="2" fill="#7ec8e3"/>
+        <!-- detalle central cuerpo -->
+        <rect x="24" y="27" width="4" height="8" rx="1" fill="#5ab0cc"/>
+        <!-- BRAZO izquierdo con bomba -->
+        <rect x="10" y="27" width="8" height="5" rx="2" fill="#7ec8e3"/>
+        <!-- bomba -->
+        <circle cx="8" cy="36" r="5" fill="#1a1a2e"/>
+        <!-- mecha -->
+        <path d="M11 32 Q13 29 15 27" stroke="#888888" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        <circle cx="15" cy="26" r="2" fill="#ff6a00"/>
+        <!-- BRAZO derecho -->
+        <rect x="34" y="27" width="8" height="5" rx="2" fill="#7ec8e3"/>
+        <!-- PANTALÓN azul oscuro -->
+        <rect x="18" y="35" width="7" height="9" rx="1" fill="#1e3a8a"/>
+        <rect x="27" y="35" width="7" height="9" rx="1" fill="#1e3a8a"/>
+        <!-- ZAPATOS negros -->
+        <rect x="15" y="43" width="11" height="5" rx="2" fill="#1a1a2e"/>
+        <rect x="26" y="43" width="11" height="5" rx="2" fill="#1a1a2e"/>
+      </svg>
+      <span class="name">Dynablaster</span>
+      <span class="arrow">→</span>
+    </a>
+
   </nav>
 </div>
 
 <script>
-  // Starfield
   const canvas = document.getElementById('stars');
   const ctx = canvas.getContext('2d');
   let stars = [];
