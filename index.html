@@ -147,6 +147,7 @@
         <rect x="30" y="22" width="10" height="10" rx="2.5" fill="#4ade80"/>
         <rect x="30" y="10" width="10" height="10" rx="2.5" fill="#4ade80"/>
         <rect x="18" y="10" width="10" height="10" rx="2.5" fill="#4ade80"/>
+        <rect x="6"  y="10" width="10" height="10" rx="2.5" fill="#4ade80"/>
         <rect x="6"  y="10" width="10" height="10" rx="2.5" fill="#86efac"/>
         <circle cx="9"  cy="13" r="1.8" fill="#000000"/>
         <circle cx="13" cy="13" r="1.8" fill="#000000"/>
@@ -292,32 +293,20 @@
     <!-- 10. DYNABLASTER -->
     <a class="item" href="https://dynabomber.vercel.app/" target="_blank" style="--c:#ff6a00">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
-        <!-- CASCO blanco -->
         <ellipse cx="26" cy="13" rx="10" ry="9" fill="#ffffff"/>
-        <!-- visera naranja -->
         <rect x="18" y="17" width="16" height="5" rx="1" fill="#ff6a00"/>
-        <!-- cara (piel) -->
         <rect x="20" y="19" width="12" height="7" rx="1" fill="#f5c98a"/>
-        <!-- ojos -->
         <rect x="22" y="21" width="3" height="3" rx="0.5" fill="#1a1a2e"/>
         <rect x="28" y="21" width="3" height="3" rx="0.5" fill="#1a1a2e"/>
-        <!-- CUERPO azul claro -->
         <rect x="18" y="26" width="16" height="10" rx="2" fill="#7ec8e3"/>
-        <!-- detalle central cuerpo -->
         <rect x="24" y="27" width="4" height="8" rx="1" fill="#5ab0cc"/>
-        <!-- BRAZO izquierdo con bomba -->
         <rect x="10" y="27" width="8" height="5" rx="2" fill="#7ec8e3"/>
-        <!-- bomba -->
         <circle cx="8" cy="36" r="5" fill="#1a1a2e"/>
-        <!-- mecha -->
         <path d="M11 32 Q13 29 15 27" stroke="#888888" stroke-width="1.3" stroke-linecap="round" fill="none"/>
         <circle cx="15" cy="26" r="2" fill="#ff6a00"/>
-        <!-- BRAZO derecho -->
         <rect x="34" y="27" width="8" height="5" rx="2" fill="#7ec8e3"/>
-        <!-- PANTALÓN azul oscuro -->
         <rect x="18" y="35" width="7" height="9" rx="1" fill="#1e3a8a"/>
         <rect x="27" y="35" width="7" height="9" rx="1" fill="#1e3a8a"/>
-        <!-- ZAPATOS negros -->
         <rect x="15" y="43" width="11" height="5" rx="2" fill="#1a1a2e"/>
         <rect x="26" y="43" width="11" height="5" rx="2" fill="#1a1a2e"/>
       </svg>
@@ -325,50 +314,207 @@
       <span class="arrow">→</span>
     </a>
 
+    <!-- 11. RAYOS FRACTALES -->
+    <a class="item" href="https://rayos.vercel.app" target="_blank" style="--c:#7dd3fc">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect width="52" height="52" rx="6" fill="#05070f"/>
+        <polyline points="30,4 18,24 26,24 16,48" stroke="#7dd3fc" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" fill="none" filter="url(#glow)"/>
+        <line x1="26" y1="24" x2="36" y2="36" stroke="#c4a5fa" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>
+        <line x1="20" y1="16" x2="10" y2="28" stroke="#c4a5fa" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+        <circle cx="8" cy="10" r="1" fill="#cdd9f5" opacity="0.7"/>
+        <circle cx="44" cy="8" r="0.8" fill="#cdd9f5" opacity="0.5"/>
+        <circle cx="40" cy="18" r="1.2" fill="#cdd9f5" opacity="0.6"/>
+        <circle cx="6" cy="38" r="0.9" fill="#cdd9f5" opacity="0.4"/>
+        <circle cx="46" cy="40" r="1" fill="#cdd9f5" opacity="0.5"/>
+      </svg>
+      <span class="name">Rayos Fractales</span>
+      <span class="arrow">→</span>
+    </a>
+
   </nav>
 </div>
 
 <script>
+(function(){
   const canvas = document.getElementById('stars');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
+  const ctx    = canvas.getContext('2d');
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  const DEPTH  = 9;
+  const BRANCH = 0.50;
+  const TURB   = 240;
+  const FADE   = 1.25;
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W, H, stars = [];
+
+  function resize(){
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    generateStars();
+    drawScene();
   }
 
-  function initStars() {
+  function generateStars(){
     stars = [];
-    for (let i = 0; i < 160; i++) {
+    const count = Math.floor((W * H) / 9000);
+    for(let i = 0; i < count; i++){
       stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.4 + 0.3,
-        a: Math.random() * 0.7 + 0.2,
-        speed: Math.random() * 0.3 + 0.05
+        x: Math.random() * W,
+        y: Math.random() * H * 0.8,
+        r: Math.random() * 1.3 + 0.3,
+        o: Math.random() * 0.6 + 0.2,
+        speed: Math.random() * 0.3 + 0.05,
+        phase: Math.random() * Math.PI * 2
       });
     }
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      s.a += s.speed * 0.02;
-      const alpha = 0.2 + Math.abs(Math.sin(s.a)) * 0.7;
+  function drawBackground(){
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0,   '#05070f');
+    g.addColorStop(0.6, '#0b1226');
+    g.addColorStop(1,   '#141b33');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = '#cdd9f5';
+    const t = performance.now() / 1000;
+    for(const s of stars){
+      const alpha = 0.15 + Math.abs(Math.sin(s.phase + t * s.speed)) * 0.65;
+      ctx.globalAlpha = alpha;
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
       ctx.fill();
-    });
-    requestAnimationFrame(draw);
+    }
+    ctx.globalAlpha = 1;
   }
 
+  function generateBolt(originX, targetX){
+    const segments = [];
+    function recurse(x1, y1, x2, y2, d, displacement, isBranch, level){
+      if(d <= 0){ segments.push({x1,y1,x2,y2,isBranch,level}); return; }
+      const mx=(x1+x2)/2, my=(y1+y2)/2;
+      const dx=x2-x1, dy=y2-y1;
+      const len=Math.hypot(dx,dy);
+      const off=(Math.random()-0.5)*displacement;
+      let nx=0, ny=0;
+      if(len>0){ nx=-dy/len; ny=dx/len; }
+      const px=mx+nx*off, py=my+ny*off;
+      recurse(x1,y1,px,py, d-1, displacement*0.55, isBranch, level+1);
+      recurse(px,py,x2,y2, d-1, displacement*0.55, isBranch, level+1);
+      if(!isBranch && d>1 && Math.random()<BRANCH){
+        const ang  = Math.atan2(y2-y1,x2-x1)+(Math.random()-0.5)*1.6;
+        const blen = len*(0.25+Math.random()*0.35);
+        recurse(px,py, px+Math.cos(ang)*blen, py+Math.sin(ang)*blen,
+                Math.min(d-1,4), displacement*0.5, true, 0);
+      }
+    }
+    recurse(originX,-20,targetX,H+20, DEPTH,TURB,false,0);
+    return segments;
+  }
+
+  function drawBolt(segments, alpha){
+    if(!segments || alpha<=0) return;
+    ctx.globalAlpha = alpha;
+    const thick=[],med=[],thin=[],branch=[];
+    for(const s of segments){
+      if(s.isBranch) branch.push(s);
+      else if(s.level<=2) thick.push(s);
+      else if(s.level<=4) med.push(s);
+      else thin.push(s);
+    }
+    function group(list,glowW,coreW,glowColor,coreColor,blur){
+      if(!list.length) return;
+      ctx.lineCap='round';
+      ctx.beginPath();
+      for(const s of list){ ctx.moveTo(s.x1,s.y1); ctx.lineTo(s.x2,s.y2); }
+      ctx.strokeStyle=glowColor; ctx.lineWidth=glowW;
+      ctx.shadowColor=glowColor; ctx.shadowBlur=blur; ctx.stroke();
+      ctx.beginPath();
+      for(const s of list){ ctx.moveTo(s.x1,s.y1); ctx.lineTo(s.x2,s.y2); }
+      ctx.strokeStyle=coreColor; ctx.lineWidth=coreW;
+      ctx.shadowBlur=0; ctx.stroke();
+    }
+    group(thick, 16,4,  'rgba(125,211,252,0.55)','#ffffff',22);
+    group(med,   10,2.4,'rgba(125,211,252,0.45)','#ffffff',16);
+    group(thin,   6,1.3,'rgba(125,211,252,0.40)','#f5fbff',10);
+    group(branch, 7,1.6,'rgba(196,165,250,0.45)','#e9d8ff',12);
+    ctx.shadowBlur=0; ctx.globalAlpha=1;
+  }
+
+  function drawGroundGlow(alpha,x){
+    if(alpha<=0) return;
+    const grad=ctx.createRadialGradient(x,H,0,x,H,H*0.55);
+    grad.addColorStop(0,`rgba(150,200,255,${alpha*0.25})`);
+    grad.addColorStop(1,'rgba(150,200,255,0)');
+    ctx.fillStyle=grad;
+    ctx.fillRect(0,H*0.4,W,H*0.6);
+  }
+
+  let bolt=null, boltAlpha=0, flashAlpha=0, strikeX=0;
+  let lastTime=0, rafId=null, starRafId=null;
+
+  function drawScene(){
+    drawBackground();
+    drawGroundGlow(boltAlpha,strikeX);
+    drawBolt(bolt,boltAlpha);
+    if(flashAlpha>0){
+      ctx.fillStyle=`rgba(180,210,255,${flashAlpha*0.35})`;
+      ctx.fillRect(0,0,W,H);
+    }
+  }
+
+  /* bucle de estrellas cuando no hay rayo activo */
+  function starLoop(){
+    if(boltAlpha>0){ starRafId=null; return; }
+    drawScene();
+    starRafId=requestAnimationFrame(starLoop);
+  }
+
+  function boltLoop(t){
+    const dt=lastTime?(t-lastTime)/1000:0;
+    lastTime=t;
+    if(boltAlpha>0)  boltAlpha =Math.max(0,boltAlpha -dt/FADE);
+    if(flashAlpha>0) flashAlpha=Math.max(0,flashAlpha-dt/0.12);
+    drawScene();
+    if(boltAlpha>0||flashAlpha>0){
+      rafId=requestAnimationFrame(boltLoop);
+    } else {
+      bolt=null; lastTime=0; rafId=null;
+      if(!starRafId) starRafId=requestAnimationFrame(starLoop);
+    }
+  }
+
+  function strike(){
+    const x      =Math.random()*W;
+    const originX=Math.max(0,Math.min(W,x+(Math.random()*160-80)));
+    const targetX=Math.max(0,Math.min(W,x+(Math.random()*80 -40)));
+    strikeX=targetX;
+    bolt=generateBolt(originX,targetX);
+    boltAlpha=1; flashAlpha=1; lastTime=0;
+    if(starRafId){ cancelAnimationFrame(starRafId); starRafId=null; }
+    if(!rafId) rafId=requestAnimationFrame(boltLoop);
+    setTimeout(strike, Math.random()*4000);
+  }
+
+  window.addEventListener('resize',resize);
   resize();
-  initStars();
-  draw();
-  window.addEventListener('resize', () => { resize(); initStars(); });
+  starRafId=requestAnimationFrame(starLoop);
+  setTimeout(strike, Math.random()*4000);
+})();
 </script>
 
 </body>
 </html>
+
