@@ -91,16 +91,38 @@
       transition: opacity 0.15s, transform 0.15s;
     }
     .item:hover .arrow { opacity: 1; transform: translateX(4px); }
+
+    /* Botón de sonido */
+    #soundBtn {
+      position: fixed;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      right: 16px;
+      z-index: 10;
+      background: rgba(8,13,26,0.55);
+      border: 1px solid rgba(125,211,252,0.2);
+      border-radius: 50%;
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color 0.2s, background 0.2s;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #soundBtn:hover { border-color: rgba(125,211,252,0.5); background: rgba(8,13,26,0.8); }
   </style>
 
   <link rel="apple-touch-icon" href="/icons/icon-apple-180.png"/>
   <link rel="manifest" href="/manifest.json"/>
   <meta name="theme-color" content="#000000"/>
-
 </head>
 <body>
 
 <canvas id="stars"></canvas>
+
+<button id="soundBtn" title="Activar/desactivar sonido">🔇</button>
 
 <div class="page">
   <h1>Pasatiempos <span>&amp;</span> Juegos</h1>
@@ -342,6 +364,9 @@
 
 <script>
 (function(){
+  /* ============================================================
+     CANVAS / RAYOS
+  ============================================================ */
   const canvas = document.getElementById('stars');
   const ctx    = canvas.getContext('2d');
 
@@ -373,7 +398,6 @@
         x: Math.random() * W,
         y: Math.random() * H * 0.8,
         r: Math.random() * 1.3 + 0.3,
-        o: Math.random() * 0.6 + 0.2,
         speed: Math.random() * 0.3 + 0.05,
         phase: Math.random() * Math.PI * 2
       });
@@ -402,31 +426,30 @@
 
   function generateBolt(originX, targetX){
     const segments = [];
-    function recurse(x1, y1, x2, y2, d, displacement, isBranch, level){
-      if(d <= 0){ segments.push({x1,y1,x2,y2,isBranch,level}); return; }
+    function recurse(x1,y1,x2,y2,d,disp,isBranch,level){
+      if(d<=0){ segments.push({x1,y1,x2,y2,isBranch,level}); return; }
       const mx=(x1+x2)/2, my=(y1+y2)/2;
-      const dx=x2-x1, dy=y2-y1;
-      const len=Math.hypot(dx,dy);
-      const off=(Math.random()-0.5)*displacement;
-      let nx=0, ny=0;
+      const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy);
+      const off=(Math.random()-0.5)*disp;
+      let nx=0,ny=0;
       if(len>0){ nx=-dy/len; ny=dx/len; }
       const px=mx+nx*off, py=my+ny*off;
-      recurse(x1,y1,px,py, d-1, displacement*0.55, isBranch, level+1);
-      recurse(px,py,x2,y2, d-1, displacement*0.55, isBranch, level+1);
+      recurse(x1,y1,px,py, d-1,disp*0.55,isBranch,level+1);
+      recurse(px,py,x2,y2, d-1,disp*0.55,isBranch,level+1);
       if(!isBranch && d>1 && Math.random()<BRANCH){
-        const ang  = Math.atan2(y2-y1,x2-x1)+(Math.random()-0.5)*1.6;
-        const blen = len*(0.25+Math.random()*0.35);
+        const ang=Math.atan2(y2-y1,x2-x1)+(Math.random()-0.5)*1.6;
+        const blen=len*(0.25+Math.random()*0.35);
         recurse(px,py, px+Math.cos(ang)*blen, py+Math.sin(ang)*blen,
-                Math.min(d-1,4), displacement*0.5, true, 0);
+                Math.min(d-1,4), disp*0.5, true, 0);
       }
     }
     recurse(originX,-20,targetX,H+20, DEPTH,TURB,false,0);
     return segments;
   }
 
-  function drawBolt(segments, alpha){
-    if(!segments || alpha<=0) return;
-    ctx.globalAlpha = alpha;
+  function drawBolt(segments,alpha){
+    if(!segments||alpha<=0) return;
+    ctx.globalAlpha=alpha;
     const thick=[],med=[],thin=[],branch=[];
     for(const s of segments){
       if(s.isBranch) branch.push(s);
@@ -446,10 +469,10 @@
       ctx.strokeStyle=coreColor; ctx.lineWidth=coreW;
       ctx.shadowBlur=0; ctx.stroke();
     }
-    group(thick, 16,4,  'rgba(125,211,252,0.55)','#ffffff',22);
-    group(med,   10,2.4,'rgba(125,211,252,0.45)','#ffffff',16);
-    group(thin,   6,1.3,'rgba(125,211,252,0.40)','#f5fbff',10);
-    group(branch, 7,1.6,'rgba(196,165,250,0.45)','#e9d8ff',12);
+    group(thick,16,4,   'rgba(125,211,252,0.55)','#ffffff',22);
+    group(med,  10,2.4, 'rgba(125,211,252,0.45)','#ffffff',16);
+    group(thin,  6,1.3, 'rgba(125,211,252,0.40)','#f5fbff',10);
+    group(branch,7,1.6, 'rgba(196,165,250,0.45)','#e9d8ff',12);
     ctx.shadowBlur=0; ctx.globalAlpha=1;
   }
 
@@ -475,7 +498,6 @@
     }
   }
 
-  /* bucle de estrellas cuando no hay rayo activo */
   function starLoop(){
     if(boltAlpha>0){ starRafId=null; return; }
     drawScene();
@@ -496,25 +518,119 @@
     }
   }
 
+  /* ============================================================
+     AUDIO — síntesis de trueno con Web Audio API
+     Ruido marrón + filtro paso-bajo + envolvente dinámica
+     El trueno llega con retardo proporcional a la distancia
+  ============================================================ */
+  let audioCtx = null;
+  let soundOn  = false;
+  const btn    = document.getElementById('soundBtn');
+
+  function getAC(){
+    if(!audioCtx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return null;
+      audioCtx = new AC();
+    }
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playThunder(distanceFactor){
+    // distanceFactor: 0 = cerca, 1 = lejos
+    if(!soundOn) return;
+    const ac = getAC();
+    if(!ac) return;
+
+    const dist     = Math.max(0, Math.min(1, distanceFactor));
+    const delay    = 0.08 + dist * 1.4;          // retardo visual→sonoro
+    const duration = 2.5 + Math.random()*2.5 + dist*2.5;
+    const peak     = 0.72 - dist*0.28;           // más silencioso si lejos
+    const cutoff   = 220 - dist*100;             // más sordo si lejos
+
+    const sampleRate = ac.sampleRate;
+    const bufLen     = Math.ceil(sampleRate * duration);
+    const buffer     = ac.createBuffer(1, bufLen, sampleRate);
+    const data       = buffer.getChannelData(0);
+
+    // Ruido marrón (integración del ruido blanco)
+    let last = 0;
+    for(let i = 0; i < bufLen; i++){
+      const w = Math.random()*2 - 1;
+      data[i] = (last + 0.02*w) / 1.02;
+      last = data[i];
+      data[i] *= 3.8;
+    }
+
+    const src = ac.createBufferSource();
+    src.buffer = buffer;
+
+    // Filtro paso-bajo para el retumbar sordo
+    const lpf = ac.createBiquadFilter();
+    lpf.type = 'lowpass';
+    lpf.frequency.value = cutoff;
+    lpf.Q.value = 0.6;
+
+    // Segundo filtro: quita los ultragudos del ruido
+    const lpf2 = ac.createBiquadFilter();
+    lpf2.type = 'lowpass';
+    lpf2.frequency.value = cutoff * 1.8;
+
+    const gain = ac.createGain();
+    const now  = ac.currentTime + delay;
+
+    // Envolvente: chasquido rápido → caída → retumbar largo → silencio
+    gain.gain.setValueAtTime(0,      now);
+    gain.gain.linearRampToValueAtTime(peak,        now + 0.03);   // chasquido
+    gain.gain.exponentialRampToValueAtTime(peak*0.45, now + 0.25);// caída rápida
+    gain.gain.exponentialRampToValueAtTime(peak*0.18, now + 1.2); // retumbar
+    gain.gain.exponentialRampToValueAtTime(0.0001,    now + duration*0.9);
+    gain.gain.setValueAtTime(0, now + duration);
+
+    src.connect(lpf);
+    lpf.connect(lpf2);
+    lpf2.connect(gain);
+    gain.connect(ac.destination);
+
+    src.start(ac.currentTime);
+    src.stop(ac.currentTime + delay + duration);
+  }
+
+  btn.addEventListener('click', ()=>{
+    soundOn = !soundOn;
+    btn.textContent = soundOn ? '🔊' : '🔇';
+    if(soundOn) getAC(); // desbloquear contexto con el gesto
+  });
+
+  /* ============================================================
+     ORQUESTACIÓN: rayo + trueno
+  ============================================================ */
   function strike(){
-    const x      =Math.random()*W;
-    const originX=Math.max(0,Math.min(W,x+(Math.random()*160-80)));
-    const targetX=Math.max(0,Math.min(W,x+(Math.random()*80 -40)));
-    strikeX=targetX;
-    bolt=generateBolt(originX,targetX);
-    boltAlpha=1; flashAlpha=1; lastTime=0;
+    const x       = Math.random()*W;
+    const originX = Math.max(0,Math.min(W, x+(Math.random()*160-80)));
+    const targetX = Math.max(0,Math.min(W, x+(Math.random()*80 -40)));
+    strikeX = targetX;
+    bolt      = generateBolt(originX, targetX);
+    boltAlpha = 1; flashAlpha = 1; lastTime = 0;
+
+    // Distancia simulada según posición horizontal relativa al centro
+    const dist = Math.abs(x - W/2) / (W/2) * 0.7 + Math.random()*0.3;
+    playThunder(dist);
+
     if(starRafId){ cancelAnimationFrame(starRafId); starRafId=null; }
     if(!rafId) rafId=requestAnimationFrame(boltLoop);
     setTimeout(strike, Math.random()*4000);
   }
 
-  window.addEventListener('resize',resize);
+  window.addEventListener('resize', resize);
   resize();
-  starRafId=requestAnimationFrame(starLoop);
+  starRafId = requestAnimationFrame(starLoop);
   setTimeout(strike, Math.random()*4000);
 })();
 </script>
 
 </body>
 </html>
+
 
