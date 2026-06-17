@@ -430,23 +430,21 @@
       else if(s.level<=4) med.push(s);
       else thin.push(s);
     }
-    function group(list,glowW,coreW,glowColor,coreColor,blur){
+    function group(list,glowW,coreW,glowColor,coreColor){
       if(!list.length) return;
       ctx.lineCap='round';
       ctx.beginPath();
       for(const s of list){ ctx.moveTo(s.x1,s.y1); ctx.lineTo(s.x2,s.y2); }
-      ctx.strokeStyle=glowColor; ctx.lineWidth=glowW;
-      ctx.shadowColor=glowColor; ctx.shadowBlur=blur; ctx.stroke();
+      ctx.strokeStyle=glowColor; ctx.lineWidth=glowW; ctx.stroke();
       ctx.beginPath();
       for(const s of list){ ctx.moveTo(s.x1,s.y1); ctx.lineTo(s.x2,s.y2); }
-      ctx.strokeStyle=coreColor; ctx.lineWidth=coreW;
-      ctx.shadowBlur=0; ctx.stroke();
+      ctx.strokeStyle=coreColor; ctx.lineWidth=coreW; ctx.stroke();
     }
-    group(thick,16,4,   'rgba(125,211,252,0.55)','#ffffff',22);
-    group(med,  10,2.4, 'rgba(125,211,252,0.45)','#ffffff',16);
-    group(thin,  6,1.3, 'rgba(125,211,252,0.40)','#f5fbff',10);
-    group(branch,7,1.6, 'rgba(196,165,250,0.45)','#e9d8ff',12);
-    ctx.shadowBlur=0; ctx.globalAlpha=1;
+    ctx.shadowBlur=0;
+    group(thick,16,4,   `rgba(125,211,252,${alpha*0.55})`,`rgba(255,255,255,${alpha})`);
+    group(med,  10,2.4, `rgba(125,211,252,${alpha*0.45})`,`rgba(255,255,255,${alpha})`);
+    group(thin,  6,1.3, `rgba(125,211,252,${alpha*0.40})`,`rgba(245,251,255,${alpha})`);
+    group(branch,7,1.6, `rgba(196,165,250,${alpha*0.45})`,`rgba(233,216,255,${alpha})`);
   }
 
   function drawGroundGlow(alpha,x){
@@ -616,6 +614,4 @@
 
 </body>
 </html>
-
-
 
