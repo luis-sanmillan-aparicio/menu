@@ -92,7 +92,6 @@
     }
     .item:hover .arrow { opacity: 1; transform: translateX(4px); }
 
-    /* Botón de sonido */
     #soundBtn {
       position: fixed;
       bottom: max(14px, env(safe-area-inset-bottom));
@@ -341,9 +340,6 @@
 
 <script>
 (function(){
-  /* ============================================================
-     CANVAS / RAYOS
-  ============================================================ */
   const canvas = document.getElementById('stars');
   const ctx    = canvas.getContext('2d');
 
@@ -495,11 +491,6 @@
     }
   }
 
-  /* ============================================================
-     AUDIO — síntesis de trueno con Web Audio API
-     Ruido marrón + filtro paso-bajo + envolvente dinámica
-     El trueno llega con retardo proporcional a la distancia
-  ============================================================ */
   let audioCtx = null;
   let soundOn  = false;
   const btn    = document.getElementById('soundBtn');
@@ -515,41 +506,52 @@
   }
 
   function playThunder(distanceFactor){
-    // distanceFactor: 0 = cerca, 1 = lejos
     if(!soundOn) return;
     const ac = getAC();
     if(!ac) return;
 
     const dist     = Math.max(0, Math.min(1, distanceFactor));
-    const delay    = 0.08 + dist * 1.4;          // retardo visual→sonoro
+    const delay    = 0.08 + dist * 1.4;
     const duration = 2.5 + Math.random()*2.5 + dist*2.5;
-    const peak     = 0.72 - dist*0.28;           // más silencioso si lejos
-    const cutoff   = 220 - dist*100;             // más sordo si lejos
+    const peak     = 0.72 - dist*0.28;
+    const cutoff   = 220 - dist*100;
 
     const sampleRate = ac.sampleRate;
     const bufLen     = Math.ceil(sampleRate * duration);
     const buffer     = ac.createBuffer(1, bufLen, sampleRate);
     const data       = buffer.getChannelData(0);
 
-    // Ruido marrón (integración del ruido blanco)
+    // Precalentamiento para estabilizar el ruido marrón
     let last = 0;
+    for(let i = 0; i < 2000; i++){ last = (last + 0.02*(Math.random()*2-1)) / 1.02; }
+
     for(let i = 0; i < bufLen; i++){
       const w = Math.random()*2 - 1;
       data[i] = (last + 0.02*w) / 1.02;
       last = data[i];
-      data[i] *= 3.8;
+    }
+    let noisePeak = 0;
+    for(let i = 0; i < bufLen; i++){
+      if(Math.abs(data[i]) > noisePeak) noisePeak = Math.abs(data[i]);
+    }
+    const scale = (noisePeak > 0) ? (0.85 / noisePeak) : 1;
+    const fadeLen = Math.floor(sampleRate * 0.015);
+    for(let i = 0; i < bufLen; i++){
+      let env = 1;
+      if(i < fadeLen) env = i / fadeLen;
+      else if(i > bufLen - fadeLen) env = (bufLen - i) / fadeLen;
+      const s = data[i] * scale * env;
+      data[i] = Math.tanh(s * 2) * 0.5; // tanh aplana picos más agresivamente que 1/(1+|x|)
     }
 
     const src = ac.createBufferSource();
     src.buffer = buffer;
 
-    // Filtro paso-bajo para el retumbar sordo
     const lpf = ac.createBiquadFilter();
     lpf.type = 'lowpass';
     lpf.frequency.value = cutoff;
     lpf.Q.value = 0.6;
 
-    // Segundo filtro: quita los ultragudos del ruido
     const lpf2 = ac.createBiquadFilter();
     lpf2.type = 'lowpass';
     lpf2.frequency.value = cutoff * 1.8;
@@ -557,32 +559,38 @@
     const gain = ac.createGain();
     const now  = ac.currentTime + delay;
 
-    // Envolvente: chasquido rápido → caída → retumbar largo → silencio
-    gain.gain.setValueAtTime(0,      now);
-    gain.gain.linearRampToValueAtTime(peak,        now + 0.03);   // chasquido
-    gain.gain.exponentialRampToValueAtTime(peak*0.45, now + 0.25);// caída rápida
-    gain.gain.exponentialRampToValueAtTime(peak*0.18, now + 1.2); // retumbar
+    gain.gain.setValueAtTime(0,           now);
+    gain.gain.linearRampToValueAtTime(peak,           now + 0.15);
+    gain.gain.exponentialRampToValueAtTime(peak*0.45, now + 0.55);
+    gain.gain.exponentialRampToValueAtTime(peak*0.18, now + 1.8);
     gain.gain.exponentialRampToValueAtTime(0.0001,    now + duration*0.9);
-    gain.gain.setValueAtTime(0, now + duration);
+    gain.gain.linearRampToValueAtTime(0,              now + duration);
+
+    if(!ac._compressor){
+      ac._compressor = ac.createDynamicsCompressor();
+      ac._compressor.threshold.value = -6;
+      ac._compressor.knee.value      = 10;
+      ac._compressor.ratio.value     = 8;
+      ac._compressor.attack.value    = 0.003;
+      ac._compressor.release.value   = 0.25;
+      ac._compressor.connect(ac.destination);
+    }
 
     src.connect(lpf);
     lpf.connect(lpf2);
     lpf2.connect(gain);
-    gain.connect(ac.destination);
+    gain.connect(ac._compressor);
 
-    src.start(ac.currentTime);
-    src.stop(ac.currentTime + delay + duration);
+    src.start(now);
+    src.stop(now + duration + 0.2);
   }
 
   btn.addEventListener('click', ()=>{
     soundOn = !soundOn;
     btn.textContent = soundOn ? '🔊' : '🔇';
-    if(soundOn) getAC(); // desbloquear contexto con el gesto
+    if(soundOn) getAC();
   });
 
-  /* ============================================================
-     ORQUESTACIÓN: rayo + trueno
-  ============================================================ */
   function strike(){
     const x       = Math.random()*W;
     const originX = Math.max(0,Math.min(W, x+(Math.random()*160-80)));
@@ -591,7 +599,6 @@
     bolt      = generateBolt(originX, targetX);
     boltAlpha = 1; flashAlpha = 1; lastTime = 0;
 
-    // Distancia simulada según posición horizontal relativa al centro
     const dist = Math.abs(x - W/2) / (W/2) * 0.7 + Math.random()*0.3;
     playThunder(dist);
 
