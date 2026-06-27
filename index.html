@@ -335,6 +335,60 @@
       <span class="arrow">→</span>
     </a>
 
+    <!-- 11. SOPA DE LETRAS -->
+    <a class="item" href="https://sopadeletrasluis.vercel.app/" target="_blank" style="--c:#2dd4bf">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <!-- Marco -->
+        <rect x="3" y="3" width="46" height="46" rx="5" fill="#0d1f1e" stroke="#2dd4bf" stroke-width="1.5"/>
+        <!-- Celdas fila 1 -->
+        <rect x="7"  y="7"  width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="18" y="7"  width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="29" y="7"  width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="40" y="7"  width="5" height="9" rx="1.5" fill="#112b29"/>
+        <!-- Celdas fila 2 -->
+        <rect x="7"  y="18" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="18" y="18" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="29" y="18" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="40" y="18" width="5" height="9" rx="1.5" fill="#112b29"/>
+        <!-- Celdas fila 3 -->
+        <rect x="7"  y="29" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="18" y="29" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="29" y="29" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="40" y="29" width="5" height="9" rx="1.5" fill="#112b29"/>
+        <!-- Celdas fila 4 -->
+        <rect x="7"  y="40" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="18" y="40" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="29" y="40" width="9" height="9" rx="1.5" fill="#112b29"/>
+        <rect x="40" y="40" width="5" height="9" rx="1.5" fill="#112b29"/>
+        <!-- Letras fila 1 -->
+        <text x="11.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">S</text>
+        <text x="22.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">O</text>
+        <text x="33.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">P</text>
+        <text x="42.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">A</text>
+        <!-- Letras fila 2 -->
+        <text x="11.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">L</text>
+        <text x="22.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">E</text>
+        <text x="33.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">T</text>
+        <text x="42.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">R</text>
+        <!-- Letras fila 3 -->
+        <text x="11.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">A</text>
+        <text x="22.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">Z</text>
+        <text x="33.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">X</text>
+        <text x="42.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">Q</text>
+        <!-- Letras fila 4 -->
+        <text x="11.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">K</text>
+        <text x="22.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">V</text>
+        <text x="33.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">M</text>
+        <text x="42.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">W</text>
+        <!-- Palabra SOPA marcada (fila 1 completa) -->
+        <rect x="7" y="7" width="38" height="9" rx="2" fill="#2dd4bf" opacity="0.30"/>
+        <!-- Palabra vertical S-L-A-K marcada (columna 1) -->
+        <rect x="7" y="7" width="9" height="42" rx="2" fill="#f59e0b" opacity="0.20"/>
+      </svg>
+      <span class="name">Sopa de Letras</span>
+      <span class="arrow">→</span>
+    </a>
+
   </nav>
 </div>
 
@@ -539,7 +593,7 @@
       if(i < fadeLen) env = i / fadeLen;
       else if(i > bufLen - fadeLen) env = (bufLen - i) / fadeLen;
       const s = data[i] * scale * env;
-      data[i] = Math.tanh(s * 2) * 0.5; // tanh aplana picos más agresivamente que 1/(1+|x|)
+      data[i] = Math.tanh(s * 2) * 0.5;
     }
 
     const src = ac.createBufferSource();
@@ -614,4 +668,3 @@
 
 </body>
 </html>
-
