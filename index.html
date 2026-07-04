@@ -111,6 +111,20 @@
       -webkit-tap-highlight-color: transparent;
     }
     #soundBtn:hover { border-color: rgba(125,211,252,0.5); background: rgba(8,13,26,0.8); }
+
+    /* Ajustes solo para móviles (iPhone/Android) para que la lista completa
+       quepa en la pantalla sin salirse; el diseño de escritorio no se toca. */
+    @media (max-width: 600px) {
+      .page { padding: 16px 20px; }
+      h1 { margin-bottom: clamp(6px, 1.2vh, 14px); }
+      .list { gap: clamp(0px, 0.4vh, 4px); }
+      .item {
+        padding: clamp(2px, 0.4vh, 6px) clamp(8px, 3vw, 14px);
+        gap: clamp(8px, 3vw, 14px);
+      }
+      .icon { width: clamp(26px, 8vw, 38px); height: clamp(26px, 8vw, 38px); }
+      .name { font-size: clamp(0.8rem, 3.2vw, 1.05rem); }
+    }
   </style>
 
   <link rel="apple-touch-icon" href="/icons/icon-apple-180.png"/>
@@ -386,6 +400,21 @@
         <rect x="7" y="7" width="9" height="42" rx="2" fill="#f59e0b" opacity="0.20"/>
       </svg>
       <span class="name">Sopa de Letras</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 12. ARROW ESCAPE -->
+    <a class="item" href="https://arrowluis.vercel.app/" target="_blank" style="--c:#ef4444">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="4" y="4" width="44" height="44" rx="8" fill="#2a0f0f" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="10" y="14" width="18" height="6" rx="1" fill="#ef4444"/>
+        <polygon points="34,17 26,11 26,23" fill="#ef4444"/>
+        <rect x="34" y="20" width="6" height="18" rx="1" fill="#fca5a5"/>
+        <polygon points="37,44 30,36 44,36" fill="#fca5a5"/>
+        <rect x="12" y="30" width="14" height="6" rx="1" fill="#f87171"/>
+        <polygon points="9,33 17,27 17,39" fill="#f87171"/>
+      </svg>
+      <span class="name">Arrow Escape</span>
       <span class="arrow">→</span>
     </a>
 
