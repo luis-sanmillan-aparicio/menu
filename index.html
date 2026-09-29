@@ -26,20 +26,21 @@
       position: relative;
       z-index: 1;
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 32px 40px;
+      padding: 10px 40px;
       gap: 0;
     }
 
     h1 {
       font-family: 'Fredoka One', cursive;
-      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-size: clamp(1.3rem, min(3.5vw, 5.5vh), 2.6rem);
       color: #fff;
       letter-spacing: 0.03em;
-      margin-bottom: clamp(10px, 2vh, 22px);
+      margin-bottom: clamp(6px, 1.5vh, 22px);
       text-align: center;
     }
     h1 span { color: #a78bfa; }
@@ -47,7 +48,7 @@
     .list {
       display: flex;
       flex-direction: column;
-      gap: clamp(2px, 1vh, 10px);
+      gap: clamp(0px, 0.3vh, 10px);
       width: 100%;
       max-width: 560px;
     }
@@ -58,7 +59,7 @@
       gap: clamp(10px, 2vw, 22px);
       text-decoration: none;
       color: #e8e8f0;
-      padding: clamp(4px, 0.8vh, 10px) clamp(10px, 2vw, 20px);
+      padding: clamp(2px, 0.4vh, 10px) clamp(10px, 2vw, 20px);
       border-radius: 14px;
       border: 1px solid transparent;
       transition: background 0.15s, border-color 0.15s, transform 0.15s;
@@ -70,15 +71,15 @@
     }
 
     .icon {
-      width: clamp(36px, 5vw, 52px);
-      height: clamp(36px, 5vw, 52px);
+      width: clamp(24px, min(5vw, 4.6vh), 52px);
+      height: clamp(24px, min(5vw, 4.6vh), 52px);
       flex-shrink: 0;
       filter: drop-shadow(0 0 6px var(--c, #a78bfa));
     }
 
     .name {
       font-family: 'Fredoka One', cursive;
-      font-size: clamp(0.95rem, 2vw, 1.25rem);
+      font-size: clamp(0.8rem, min(2vw, 2.5vh), 1.25rem);
       letter-spacing: 0.01em;
       color: #fff;
     }
@@ -115,15 +116,16 @@
     /* Ajustes solo para móviles (iPhone/Android) para que la lista completa
        quepa en la pantalla sin salirse; el diseño de escritorio no se toca. */
     @media (max-width: 600px) {
-      .page { padding: 16px 20px; }
-      h1 { margin-bottom: clamp(6px, 1.2vh, 14px); }
-      .list { gap: clamp(0px, 0.4vh, 4px); }
+      .page { padding: 8px 16px; }
       .item {
-        padding: clamp(2px, 0.4vh, 6px) clamp(8px, 3vw, 14px);
+        padding: clamp(1px, 0.3vh, 4px) clamp(8px, 3vw, 14px);
         gap: clamp(8px, 3vw, 14px);
       }
-      .icon { width: clamp(26px, 8vw, 38px); height: clamp(26px, 8vw, 38px); }
-      .name { font-size: clamp(0.8rem, 3.2vw, 1.05rem); }
+      .icon {
+        width: clamp(24px, min(8vw, 4.6vh), 38px);
+        height: clamp(24px, min(8vw, 4.6vh), 38px);
+      }
+      .name { font-size: clamp(0.8rem, min(3.2vw, 2.5vh), 1.05rem); }
     }
   </style>
 
@@ -443,6 +445,31 @@
         <line x1="37" y1="42" x2="41" y2="39" stroke="#5c3a1a" stroke-width="1.4" stroke-linecap="round"/>
       </svg>
       <span class="name">Solitario Español</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 14. CARTAS RIVALES -->
+    <a class="item" href="https://cardlordluis.vercel.app/" target="_blank" style="--c:#9f8cff">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <!-- Carta trasera (rival) inclinada -->
+        <g transform="rotate(-14 20 28)">
+          <rect x="6" y="8" width="24" height="34" rx="4" fill="#3a3454" stroke="#9f8cff" stroke-width="1.5"/>
+          <path d="M11 13 L25 37 M25 13 L11 37" stroke="#9f8cff" stroke-width="1.2" opacity="0.6"/>
+          <rect x="10" y="12" width="16" height="26" rx="2" fill="none" stroke="#9f8cff" stroke-width="1" opacity="0.6"/>
+        </g>
+        <!-- Carta delantera (pergamino) -->
+        <g transform="rotate(10 33 28)">
+          <rect x="20" y="9" width="24" height="34" rx="4" fill="#ece3cf" stroke="#c9bd9e" stroke-width="1.5"/>
+          <!-- Espada -->
+          <line x1="32" y1="14" x2="32" y2="30" stroke="#5b7c99" stroke-width="2.6" stroke-linecap="round"/>
+          <rect x="27.5" y="25" width="9" height="2.2" rx="1" fill="#3d5872"/>
+          <polygon points="32,12 29.8,16 34.2,16" fill="#8fb0c9"/>
+          <!-- Ataque y vida -->
+          <text x="24" y="40" font-size="7" font-weight="bold" fill="#c0435a" font-family="Georgia,serif">2</text>
+          <text x="38" y="40" font-size="7" font-weight="bold" fill="#3f8f63" font-family="Georgia,serif">3</text>
+        </g>
+      </svg>
+      <span class="name">Cartas Rivales</span>
       <span class="arrow">→</span>
     </a>
 
