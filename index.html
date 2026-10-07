@@ -31,7 +31,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 10px 40px;
+      padding: 4px 40px;
       gap: 0;
     }
 
@@ -40,7 +40,7 @@
       font-size: clamp(1.3rem, min(3.5vw, 5.5vh), 2.6rem);
       color: #fff;
       letter-spacing: 0.03em;
-      margin-bottom: clamp(6px, 1.5vh, 22px);
+      margin-bottom: clamp(4px, 1vh, 16px);
       text-align: center;
     }
     h1 span { color: #a78bfa; }
@@ -71,15 +71,15 @@
     }
 
     .icon {
-      width: clamp(24px, min(5vw, 4.6vh), 52px);
-      height: clamp(24px, min(5vw, 4.6vh), 52px);
+      width: clamp(24px, min(5vw, 4.2vh), 52px);
+      height: clamp(24px, min(5vw, 4.2vh), 52px);
       flex-shrink: 0;
       filter: drop-shadow(0 0 6px var(--c, #a78bfa));
     }
 
     .name {
       font-family: 'Fredoka One', cursive;
-      font-size: clamp(0.8rem, min(2vw, 2.5vh), 1.25rem);
+      font-size: clamp(0.8rem, min(2vw, 2.3vh), 1.25rem);
       letter-spacing: 0.01em;
       color: #fff;
     }
@@ -116,16 +116,16 @@
     /* Ajustes solo para móviles (iPhone/Android) para que la lista completa
        quepa en la pantalla sin salirse; el diseño de escritorio no se toca. */
     @media (max-width: 600px) {
-      .page { padding: 8px 16px; }
+      .page { padding: 4px 16px; }
       .item {
         padding: clamp(1px, 0.3vh, 4px) clamp(8px, 3vw, 14px);
         gap: clamp(8px, 3vw, 14px);
       }
       .icon {
-        width: clamp(24px, min(8vw, 4.6vh), 38px);
-        height: clamp(24px, min(8vw, 4.6vh), 38px);
+        width: clamp(24px, min(8vw, 4.2vh), 38px);
+        height: clamp(24px, min(8vw, 4.2vh), 38px);
       }
-      .name { font-size: clamp(0.8rem, min(3.2vw, 2.5vh), 1.05rem); }
+      .name { font-size: clamp(0.8rem, min(3.2vw, 2.3vh), 1.05rem); }
     }
   </style>
 
@@ -470,6 +470,38 @@
         </g>
       </svg>
       <span class="name">Cartas Rivales</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- 15. ARKANOID CUADRADO -->
+    <a class="item" href="https://cuadradoluis.vercel.app/" target="_blank" style="--c:#fb7185">
+      <svg class="icon" viewBox="0 0 52 52" fill="none">
+        <rect x="2" y="2" width="48" height="48" rx="4" fill="#0a0a0a"/>
+        <!-- ladrillos del marco -->
+        <rect x="11" y="4" width="9" height="5" rx="1.5" fill="#f87171"/>
+        <rect x="21" y="4" width="9" height="5" rx="1.5" fill="#fb923c"/>
+        <rect x="31" y="4" width="9" height="5" rx="1.5" fill="#facc15"/>
+        <rect x="43" y="11" width="5" height="9" rx="1.5" fill="#4ade80"/>
+        <rect x="43" y="21" width="5" height="9" rx="1.5" fill="#2dd4bf"/>
+        <rect x="43" y="31" width="5" height="9" rx="1.5" fill="#38bdf8"/>
+        <rect x="31" y="43" width="9" height="5" rx="1.5" fill="#818cf8"/>
+        <rect x="21" y="43" width="9" height="5" rx="1.5" fill="#a78bfa"/>
+        <rect x="11" y="43" width="9" height="5" rx="1.5" fill="#f472b6"/>
+        <rect x="4" y="31" width="5" height="9" rx="1.5" fill="#fb7185"/>
+        <rect x="4" y="21" width="5" height="9" rx="1.5" fill="#f87171"/>
+        <rect x="4" y="11" width="5" height="9" rx="1.5" fill="#fb923c"/>
+        <!-- cuñas de las esquinas -->
+        <path d="M9 9 L17 9 L9 17 Z M43 9 L35 9 L43 17 Z M43 43 L35 43 L43 35 Z M9 43 L17 43 L9 35 Z" fill="#8a8a8a"/>
+        <!-- cuatro paletas -->
+        <rect x="19" y="11" width="14" height="3" rx="1.5" fill="#fff"/>
+        <rect x="19" y="38" width="14" height="3" rx="1.5" fill="#fff"/>
+        <rect x="11" y="19" width="3" height="14" rx="1.5" fill="#fff"/>
+        <rect x="38" y="19" width="3" height="14" rx="1.5" fill="#fff"/>
+        <!-- punto central y bola -->
+        <circle cx="26" cy="26" r="4.5" fill="#fff"/>
+        <circle cx="33" cy="32" r="2" fill="#fb7185"/>
+      </svg>
+      <span class="name">Arkanoid Cuadrado</span>
       <span class="arrow">→</span>
     </a>
 
