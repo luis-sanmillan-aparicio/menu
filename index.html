@@ -15,16 +15,23 @@
       font-family: 'Nunito', sans-serif;
     }
 
-    canvas#stars {
+    /* Capas del fondo, de abajo a arriba:
+       0 estrellas · 1 nubes · 2 relámpagos · 3 letras e iconos */
+    canvas#stars, canvas#clouds, canvas#bolt {
       position: fixed;
       inset: 0;
-      z-index: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
       pointer-events: none;
     }
+    canvas#stars  { z-index: 0; }
+    canvas#clouds { z-index: 1; }
+    canvas#bolt   { z-index: 2; }
 
     .page {
       position: relative;
-      z-index: 1;
+      z-index: 3;
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
@@ -42,6 +49,7 @@
       letter-spacing: 0.03em;
       margin-bottom: clamp(4px, 1vh, 16px);
       text-align: center;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.65);
     }
     h1 span { color: #a78bfa; }
 
@@ -82,6 +90,7 @@
       font-size: clamp(0.8rem, min(2vw, 2.3vh), 1.25rem);
       letter-spacing: 0.01em;
       color: #fff;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.7);
     }
 
     .arrow {
@@ -136,6 +145,8 @@
 <body>
 
 <canvas id="stars"></canvas>
+<canvas id="clouds"></canvas>
+<canvas id="bolt"></canvas>
 
 <button id="soundBtn" title="Activar/desactivar sonido">🔇</button>
 
@@ -144,7 +155,6 @@
 
   <nav class="list">
 
-    <!-- 1. PUZZLE -->
     <a class="item" href="https://puzzleluis.vercel.app" target="_blank" style="--c:#f59e0b">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <defs><clipPath id="pc"><rect x="0" y="0" width="52" height="52"/></clipPath></defs>
@@ -161,7 +171,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 2. HANOI -->
     <a class="item" href="https://hanoiluis.vercel.app" target="_blank" style="--c:#34d399">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="4" y="46" width="44" height="4" rx="2" fill="#34d399"/>
@@ -175,7 +184,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 3. SNAKE -->
     <a class="item" href="https://snakeluis.vercel.app" target="_blank" style="--c:#4ade80">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="6"  y="34" width="10" height="10" rx="2.5" fill="#4ade80"/>
@@ -200,7 +208,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 4. COMECOCOS -->
     <a class="item" href="https://cometelos.vercel.app" target="_blank" style="--c:#facc15">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <path d="M26 26 L46 17 A22 22 0 1 0 46 35 Z" fill="#facc15"/>
@@ -218,7 +225,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 5. COMECOCOS TÚNELES -->
     <a class="item" href="https://comecocostuneles.vercel.app" target="_blank" style="--c:#a78bfa">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <path d="M26 26 L46 17 A22 22 0 1 0 46 35 Z" fill="#facc15"/>
@@ -238,7 +244,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 6. CAÑÓN DE PÁJAROS -->
     <a class="item" href="https://pajaros.vercel.app" target="_blank" style="--c:#fb923c">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="0" y="46" width="52" height="4" rx="2" fill="#1a0e06"/>
@@ -257,7 +262,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 7. ARKANOID -->
     <a class="item" href="https://arkanoidluis.vercel.app" target="_blank" style="--c:#38bdf8">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="2"  y="4"  width="14" height="6" rx="2" fill="#f87171"/>
@@ -277,7 +281,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 8. PONG -->
     <a class="item" href="https://arcade-blond.vercel.app" target="_blank" style="--c:#f472b6">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="2" y="2" width="48" height="48" rx="5" fill="#0a0a1a" stroke="#f472b6" stroke-width="1.5"/>
@@ -293,7 +296,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 9. SPACE INVADERS -->
     <a class="item" href="https://spaceinvaders-zeta.vercel.app" target="_blank" style="--c:#818cf8">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="4"  y="4" width="10" height="8" rx="2" fill="#818cf8"/>
@@ -327,7 +329,6 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 10. DYNABLASTER -->
     <a class="item" href="https://dynabomber.vercel.app/" target="_blank" style="--c:#ff6a00">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <ellipse cx="26" cy="13" rx="10" ry="9" fill="#ffffff"/>
@@ -351,61 +352,48 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 11. SOPA DE LETRAS -->
     <a class="item" href="https://sopadeletrasluis.vercel.app/" target="_blank" style="--c:#2dd4bf">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
-        <!-- Marco -->
         <rect x="3" y="3" width="46" height="46" rx="5" fill="#0d1f1e" stroke="#2dd4bf" stroke-width="1.5"/>
-        <!-- Celdas fila 1 -->
         <rect x="7"  y="7"  width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="18" y="7"  width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="29" y="7"  width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="40" y="7"  width="5" height="9" rx="1.5" fill="#112b29"/>
-        <!-- Celdas fila 2 -->
         <rect x="7"  y="18" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="18" y="18" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="29" y="18" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="40" y="18" width="5" height="9" rx="1.5" fill="#112b29"/>
-        <!-- Celdas fila 3 -->
         <rect x="7"  y="29" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="18" y="29" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="29" y="29" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="40" y="29" width="5" height="9" rx="1.5" fill="#112b29"/>
-        <!-- Celdas fila 4 -->
         <rect x="7"  y="40" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="18" y="40" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="29" y="40" width="9" height="9" rx="1.5" fill="#112b29"/>
         <rect x="40" y="40" width="5" height="9" rx="1.5" fill="#112b29"/>
-        <!-- Letras fila 1 -->
         <text x="11.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">S</text>
         <text x="22.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">O</text>
         <text x="33.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">P</text>
         <text x="42.5" y="15" font-size="7" fill="#a7f3d0" font-family="monospace" text-anchor="middle">A</text>
-        <!-- Letras fila 2 -->
         <text x="11.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">L</text>
         <text x="22.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">E</text>
         <text x="33.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">T</text>
         <text x="42.5" y="26" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">R</text>
-        <!-- Letras fila 3 -->
         <text x="11.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">A</text>
         <text x="22.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">Z</text>
         <text x="33.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">X</text>
         <text x="42.5" y="37" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">Q</text>
-        <!-- Letras fila 4 -->
         <text x="11.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">K</text>
         <text x="22.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">V</text>
         <text x="33.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">M</text>
         <text x="42.5" y="48" font-size="7" fill="#e8e8f0" font-family="monospace" text-anchor="middle">W</text>
-        <!-- Palabra SOPA marcada (fila 1 completa) -->
         <rect x="7" y="7" width="38" height="9" rx="2" fill="#2dd4bf" opacity="0.30"/>
-        <!-- Palabra vertical S-L-A-K marcada (columna 1) -->
         <rect x="7" y="7" width="9" height="42" rx="2" fill="#f59e0b" opacity="0.20"/>
       </svg>
       <span class="name">Sopa de Letras</span>
       <span class="arrow">→</span>
     </a>
 
-    <!-- 12. ARROW ESCAPE -->
     <a class="item" href="https://arrowluis.vercel.app/" target="_blank" style="--c:#ef4444">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="4" y="4" width="44" height="44" rx="8" fill="#2a0f0f" stroke="#ef4444" stroke-width="1.5"/>
@@ -420,26 +408,18 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 13. SOLITARIO ESPAÑOL -->
     <a class="item" href="https://solitarioluis.vercel.app" target="_blank" style="--c:#d4af37">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
-        <!-- Oros: arriba-izquierda -->
         <circle cx="13" cy="13" r="9" fill="#f5c542"/>
         <circle cx="13" cy="13" r="9" fill="none" stroke="#a8791f" stroke-width="1.2"/>
         <circle cx="13" cy="13" r="4" fill="none" stroke="#a8791f" stroke-width="1"/>
-
-        <!-- Copas: arriba-derecha -->
         <path d="M32 5 Q32 13 39 13 Q46 13 46 5 L43.5 5 Q43.5 10 39 10 Q34.5 10 34.5 5 Z" fill="#e53935"/>
         <rect x="38" y="13" width="2" height="6" fill="#e53935"/>
         <rect x="34" y="19" width="10" height="2.2" rx="1" fill="#e53935"/>
-
-        <!-- Espadas: abajo-izquierda -->
         <line x1="13" y1="29" x2="13" y2="47" stroke="#5b7c99" stroke-width="3" stroke-linecap="round"/>
         <rect x="7" y="33" width="12" height="2.4" rx="1" fill="#3d5872"/>
         <circle cx="13" cy="45" r="2" fill="#3d5872"/>
         <polygon points="13,29 10,33 16,33" fill="#8fb0c9"/>
-
-        <!-- Bastos: abajo-derecha -->
         <line x1="34" y1="47" x2="45" y2="29" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round"/>
         <circle cx="45" cy="29" r="3" fill="#a9702f"/>
         <line x1="37" y1="42" x2="41" y2="39" stroke="#5c3a1a" stroke-width="1.4" stroke-linecap="round"/>
@@ -448,23 +428,18 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 14. CARTAS RIVALES -->
     <a class="item" href="https://cardlordluis.vercel.app/" target="_blank" style="--c:#9f8cff">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
-        <!-- Carta trasera (rival) inclinada -->
         <g transform="rotate(-14 20 28)">
           <rect x="6" y="8" width="24" height="34" rx="4" fill="#3a3454" stroke="#9f8cff" stroke-width="1.5"/>
           <path d="M11 13 L25 37 M25 13 L11 37" stroke="#9f8cff" stroke-width="1.2" opacity="0.6"/>
           <rect x="10" y="12" width="16" height="26" rx="2" fill="none" stroke="#9f8cff" stroke-width="1" opacity="0.6"/>
         </g>
-        <!-- Carta delantera (pergamino) -->
         <g transform="rotate(10 33 28)">
           <rect x="20" y="9" width="24" height="34" rx="4" fill="#ece3cf" stroke="#c9bd9e" stroke-width="1.5"/>
-          <!-- Espada -->
           <line x1="32" y1="14" x2="32" y2="30" stroke="#5b7c99" stroke-width="2.6" stroke-linecap="round"/>
           <rect x="27.5" y="25" width="9" height="2.2" rx="1" fill="#3d5872"/>
           <polygon points="32,12 29.8,16 34.2,16" fill="#8fb0c9"/>
-          <!-- Ataque y vida -->
           <text x="24" y="40" font-size="7" font-weight="bold" fill="#c0435a" font-family="Georgia,serif">2</text>
           <text x="38" y="40" font-size="7" font-weight="bold" fill="#3f8f63" font-family="Georgia,serif">3</text>
         </g>
@@ -473,11 +448,9 @@
       <span class="arrow">→</span>
     </a>
 
-    <!-- 15. ARKANOID CUADRADO -->
     <a class="item" href="https://cuadradoluis.vercel.app/" target="_blank" style="--c:#fb7185">
       <svg class="icon" viewBox="0 0 52 52" fill="none">
         <rect x="2" y="2" width="48" height="48" rx="4" fill="#0a0a0a"/>
-        <!-- ladrillos del marco -->
         <rect x="11" y="4" width="9" height="5" rx="1.5" fill="#f87171"/>
         <rect x="21" y="4" width="9" height="5" rx="1.5" fill="#fb923c"/>
         <rect x="31" y="4" width="9" height="5" rx="1.5" fill="#facc15"/>
@@ -490,14 +463,11 @@
         <rect x="4" y="31" width="5" height="9" rx="1.5" fill="#fb7185"/>
         <rect x="4" y="21" width="5" height="9" rx="1.5" fill="#f87171"/>
         <rect x="4" y="11" width="5" height="9" rx="1.5" fill="#fb923c"/>
-        <!-- cuñas de las esquinas -->
         <path d="M9 9 L17 9 L9 17 Z M43 9 L35 9 L43 17 Z M43 43 L35 43 L43 35 Z M9 43 L17 43 L9 35 Z" fill="#8a8a8a"/>
-        <!-- cuatro paletas -->
         <rect x="19" y="11" width="14" height="3" rx="1.5" fill="#fff"/>
         <rect x="19" y="38" width="14" height="3" rx="1.5" fill="#fff"/>
         <rect x="11" y="19" width="3" height="14" rx="1.5" fill="#fff"/>
         <rect x="38" y="19" width="3" height="14" rx="1.5" fill="#fff"/>
-        <!-- punto central y bola -->
         <circle cx="26" cy="26" r="4.5" fill="#fff"/>
         <circle cx="33" cy="32" r="2" fill="#fb7185"/>
       </svg>
@@ -508,10 +478,378 @@
   </nav>
 </div>
 
+<!-- ═══════════ CAPA 1: NUBES (WebGL, fondo transparente) ═══════════ -->
+<script>
+(() => {
+  const CONFIG = {
+    libre: 59, colgar: 2.5, tam: 1.75, estirado: 2.55, turbulencia: 1,
+    detalle: 5, borde: 1.2, opacidad: 1, sombra: 0.5, sol: 235,
+    viento: 2, evol: 0.55, luz: 1.35, semilla: 0
+  };
+  const P = CONFIG;
+  const canvas = document.getElementById('clouds');
+
+  const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false });
+  if (!gl) { console.error('Nubes: este navegador no admite WebGL.'); return; }
+
+  const VS = 'attribute vec2 a_pos; void main(){ gl_Position = vec4(a_pos, 0., 1.); }';
+  const PRECISION = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+`;
+
+  const CAMPO = PRECISION + `
+uniform vec2 u_res;
+uniform float u_scale, u_aspect, u_est, u_warp, u_oct, u_time, u_wind;
+uniform vec2 u_seed;
+
+vec2 hash22(vec2 p){
+  vec3 p3 = fract(vec3(p.xyx) * vec3(.1031, .1030, .0973));
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.xx + p3.yz) * p3.zy);
+}
+float gnoise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f*f*f*(f*(f*6.-15.)+10.);
+  vec2 g00 = hash22(i) * 2. - 1.;
+  vec2 g10 = hash22(i + vec2(1.,0.)) * 2. - 1.;
+  vec2 g01 = hash22(i + vec2(0.,1.)) * 2. - 1.;
+  vec2 g11 = hash22(i + vec2(1.,1.)) * 2. - 1.;
+  float n00 = dot(g00, f);
+  float n10 = dot(g10, f - vec2(1.,0.));
+  float n01 = dot(g01, f - vec2(0.,1.));
+  float n11 = dot(g11, f - vec2(1.,1.));
+  return mix(mix(n00, n10, u.x), mix(n01, n11, u.x), u.y);
+}
+const mat2 ROT = mat2(0.8776, 0.4794, -0.4794, 0.8776);
+float fbm(vec2 p, float oct, float churn){
+  float s = 0., a = .5;
+  for (int i = 0; i < 9; i++) {
+    if (float(i) >= oct) break;
+    s += a * gnoise(p);
+    p = ROT * p * 2.02 + vec2(17.3, 9.1) + vec2(.04, -.025) * churn * float(i + 1);
+    a *= .5;
+  }
+  return s;
+}
+float field(vec2 uv){
+  vec2 p = vec2(uv.x * u_aspect / u_est, uv.y) * u_scale + u_seed - vec2(u_wind, 0.);
+  vec2 w = p;
+  if (u_warp > 0.) {
+    w += u_warp * vec2(
+      fbm(p * .7 + vec2(3.1, 7.7) + vec2(0., u_time * .08), 4., u_time),
+      fbm(p * .7 + vec2(11.9, 2.3) + vec2(u_time * .06, 0.), 4., u_time));
+  }
+  return fbm(w, u_oct, u_time);
+}
+`;
+
+  const FS_CAL = CAMPO + `
+void main(){
+  vec2 uv = vec2(gl_FragCoord.x / u_res.x, 1. - gl_FragCoord.y / u_res.y);
+  float g = field(uv);
+  float v = clamp((g + 1.5) / 3., 0., 1.) * 255.;
+  gl_FragColor = vec4(floor(v) / 255., fract(v), 0., 1.);
+}
+`;
+
+  const FS_DENS = CAMPO + `
+uniform float u_t, u_w, u_bias, u_t0;
+void main(){
+  vec2 uv = vec2(gl_FragCoord.x / u_res.x, 1. - gl_FragCoord.y / u_res.y);
+  float raw = field(uv);
+  // Perfil vertical: arriba (+1) casi siempre nubes, abajo (-1) casi nunca
+  float prof = 1. - 2. * smoothstep(.02, .85, uv.y);
+  float f = raw + u_bias * prof;
+  float d = smoothstep(0., 1., clamp((f - (u_t - u_w)) / (2. * u_w), 0., 1.));
+  // Grosor: finos en los bordes, y con relieve fractal también en la zona cubierta
+  float g1 = clamp((f - u_t) / (2.2 * u_w), 0., 1.);
+  float g2 = clamp((raw - u_t0) / (3. * u_w) + .5, 0., 1.);
+  gl_FragColor = vec4(d, g1 * (.3 + .7 * g2), 0., 1.);
+}
+`;
+
+  // Iluminación nocturna + destello del relámpago (u_fl = x, y, intensidad)
+  const FS_LUZ = PRECISION + `
+uniform sampler2D u_dens;
+uniform vec2 u_res;
+uniform vec2 u_sun;
+uniform vec3 u_fl;
+uniform float u_step, u_shadow, u_opacity, u_gain;
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res;
+  vec4 c = texture2D(u_dens, uv);
+  float d = c.r, thick = c.g;
+  if (d <= .002) { gl_FragColor = vec4(0.); return; }
+  vec2 dir = vec2(u_sun.x, -u_sun.y) * u_step / u_res;
+  float occ = 0., wsum = 0.;
+  for (int s = 1; s <= 7; s++) {
+    float fs = float(s);
+    float wgt = 1. - (fs - 1.) / 8.;
+    occ += texture2D(u_dens, clamp(uv + dir * fs, 0., 1.)).r * wgt;
+    wsum += wgt;
+  }
+  occ /= wsum;
+  float sh = clamp(occ * .8 - .1 + thick * .25, 0., 1.);
+  sh = sh * sh * (3. - 2. * sh);
+  sh = clamp(sh * u_shadow, 0., 1.);
+  vec3 col = mix(vec3(92., 108., 150.), vec3(16., 24., 50.), sh) * u_gain / 255.;
+  float brillo = (1. - thick) * (1. - sh) * .25;
+  col = min(col + vec3(brillo * 70., brillo * 78., brillo * 100.) * u_gain / 255., 1.);
+  vec2 dd = (uv - u_fl.xy) * vec2(u_res.x / u_res.y, 1.);
+  float fo = .3 + .7 * exp(-dot(dd, dd) * 3.);
+  col = min(col + vec3(.55, .72, 1.) * u_fl.z * fo * (1. - .6 * sh), 1.);
+  float a = u_opacity * pow(d, 1.4) * (.5 + .5 * thick);
+  gl_FragColor = vec4(col * a, a);
+}
+`;
+
+  function compilar(tipo, src) {
+    const s = gl.createShader(tipo);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function programa(fs) {
+    const p = gl.createProgram();
+    gl.attachShader(p, compilar(gl.VERTEX_SHADER, VS));
+    gl.attachShader(p, compilar(gl.FRAGMENT_SHADER, fs));
+    gl.bindAttribLocation(p, 0, 'a_pos');
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    const u = {};
+    const nu = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+    for (let i = 0; i < nu; i++) {
+      const inf = gl.getActiveUniform(p, i);
+      u[inf.name] = gl.getUniformLocation(p, inf.name);
+    }
+    return { p, u };
+  }
+
+  let progCal, progDens, progLuz;
+  try {
+    progCal = programa(FS_CAL);
+    progDens = programa(FS_DENS);
+    progLuz = programa(FS_LUZ);
+  } catch (e) {
+    console.error('Nubes: no se pudo iniciar WebGL.', e);
+    return;
+  }
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  gl.disable(gl.BLEND);
+
+  function crearFBO(w, h, filtro) {
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filtro);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtro);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const fb = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    return { tex, fb, w, h };
+  }
+  function borrarFBO(f) {
+    if (!f) return;
+    gl.deleteTexture(f.tex); gl.deleteFramebuffer(f.fb);
+  }
+
+  const MAX_PIXELS = 600000;
+  let calidad = 1;
+  let dens = null, cal = null, bufCal = null;
+  let dw = 2, dh = 2, aspecto = 1;
+  let semilla = 0, seedX = 0, seedY = 0;
+  let tiempo = 0, viento = 0;
+  let pausado = false, sucio = true, snapPend = true;
+  let iqrS = null, tS = 0, sesgoA = 0, t0S = 0;
+  function perfil(v) {
+    const x = Math.min(1, Math.max(0, (v - 0.02) / 0.83));
+    return 1 - 2 * (x * x * (3 - 2 * x));
+  }
+
+  function aleatoria() { return (Math.random() * 4294967295 + 1) >>> 0; }
+
+  function fijarSemilla() {
+    const r = (function (a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    })(semilla);
+    seedX = r() * 200; seedY = r() * 200;
+  }
+
+  function redimensionar() {
+    const Wd = window.innerWidth, Hd = window.innerHeight;
+    const k = Math.min(1, Math.sqrt(MAX_PIXELS / (Wd * Hd))) * calidad;
+    dw = Math.max(2, Math.round(Wd * k));
+    dh = Math.max(2, Math.round(Hd * k));
+    aspecto = Wd / Hd;
+    canvas.width = dw; canvas.height = dh;
+
+    borrarFBO(dens); borrarFBO(cal);
+    dens = crearFBO(dw, dh, gl.LINEAR);
+    const cw = 160;
+    const ch = Math.max(24, Math.min(160, Math.round(cw * Hd / Wd)));
+    cal = crearFBO(cw, ch, gl.NEAREST);
+    bufCal = new Uint8Array(cw * ch * 4);
+    snapPend = true; sucio = true;
+  }
+
+  function uniformesCampo(pr, w, h) {
+    gl.useProgram(pr.p);
+    gl.uniform2f(pr.u.u_res, w, h);
+    gl.uniform1f(pr.u.u_scale, 2.4 / P.tam);
+    gl.uniform1f(pr.u.u_aspect, aspecto);
+    gl.uniform1f(pr.u.u_est, P.estirado);
+    gl.uniform1f(pr.u.u_warp, P.turbulencia);
+    gl.uniform1f(pr.u.u_oct, P.detalle);
+    gl.uniform1f(pr.u.u_time, tiempo);
+    gl.uniform1f(pr.u.u_wind, viento);
+    gl.uniform2f(pr.u.u_seed, seedX, seedY);
+  }
+
+  function calibrar(snap) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, cal.fb);
+    gl.viewport(0, 0, cal.w, cal.h);
+    uniformesCampo(progCal, cal.w, cal.h);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.readPixels(0, 0, cal.w, cal.h, gl.RGBA, gl.UNSIGNED_BYTE, bufCal);
+
+    const N = cal.w * cal.h;
+    const g = new Float32Array(N);
+    const vtop = new Float32Array(N);
+    for (let r = 0; r < cal.h; r++) {
+      const vt = 1 - (r + 0.5) / cal.h;
+      for (let c = 0; c < cal.w; c++) {
+        const i = r * cal.w + c, j = i * 4;
+        const v = bufCal[j] / 255 + bufCal[j + 1] / 255 / 255;
+        g[i] = v * 3 - 1.5;
+        vtop[i] = vt;
+      }
+    }
+
+    const s1 = Float32Array.from(g).sort();
+    const iqr = Math.max(1e-4, s1[Math.floor(N * 0.75)] - s1[Math.floor(N * 0.25)]);
+    iqrS = (iqrS === null || snap) ? iqr : iqrS + (iqr - iqrS) * 0.2;
+    sesgoA = P.colgar * iqrS * 0.85;
+    const med = s1[N >> 1];
+    t0S = (snap || t0S === 0) ? med : t0S + (med - t0S) * 0.2;
+
+    const fp = new Float32Array(N);
+    for (let i = 0; i < N; i++) fp[i] = g[i] + sesgoA * perfil(vtop[i]);
+    const s2 = Float32Array.from(fp).sort();
+    const idx = Math.min(N - 1, Math.max(0, Math.floor(N * P.libre / 100)));
+    const tObj = s2[idx];
+    tS = snap ? tObj : tS + (tObj - tS) * 0.25;
+  }
+
+  function dibujar() {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, dens.fb);
+    gl.viewport(0, 0, dw, dh);
+    uniformesCampo(progDens, dw, dh);
+    gl.uniform1f(progDens.u.u_t, tS);
+    gl.uniform1f(progDens.u.u_w, Math.max(1e-4, iqrS * P.borde));
+    gl.uniform1f(progDens.u.u_bias, sesgoA);
+    gl.uniform1f(progDens.u.u_t0, t0S);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, dw, dh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(progLuz.p);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, dens.tex);
+    gl.uniform1i(progLuz.u.u_dens, 0);
+    gl.uniform2f(progLuz.u.u_res, dw, dh);
+    const ang = P.sol * Math.PI / 180;
+    gl.uniform2f(progLuz.u.u_sun, Math.cos(ang), Math.sin(ang));
+    gl.uniform1f(progLuz.u.u_step, Math.max(2, dh / 110));
+    gl.uniform1f(progLuz.u.u_shadow, P.sombra);
+    gl.uniform1f(progLuz.u.u_opacity, P.opacidad);
+    gl.uniform1f(progLuz.u.u_gain, P.luz);
+    const F = window.NubesNoche.destello;
+    gl.uniform3f(progLuz.u.u_fl, F.x, F.y, F.i);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  let last = performance.now(), frameN = 0, acum = 0, cnt = 0;
+  function frame(now) {
+    requestAnimationFrame(frame);
+    const dtReal = (now - last) / 1000;
+    last = now;
+    const dt = Math.min(0.1, dtReal);
+
+    if (!pausado) {
+      tiempo += dt * P.evol;
+      viento += dt * P.viento * 0.03;
+    } else if (!sucio) {
+      return;
+    }
+
+    if (snapPend) { calibrar(true); snapPend = false; frameN = 0; }
+    else if (!pausado && ++frameN % 6 === 0) calibrar(false);
+
+    dibujar();
+    sucio = false;
+
+    // Calidad adaptativa: si va lento, baja la resolución interna
+    if (!pausado && dtReal < 0.1) {
+      acum += dtReal;
+      if (++cnt >= 45) {
+        const media = acum / cnt;
+        acum = 0; cnt = 0;
+        if (media > 0.036 && calidad > 0.4) { calidad *= 0.8; redimensionar(); }
+      }
+    }
+  }
+
+  window.NubesNoche = {
+    config: P,
+    destello: { x: 0.5, y: 0.75, i: 0 },   // lo actualizan los relámpagos
+    set(cambios) {
+      Object.assign(P, cambios || {});
+      if ('semilla' in (cambios || {})) {
+        semilla = P.semilla > 0 ? P.semilla : aleatoria();
+        fijarSemilla();
+      }
+      snapPend = true; sucio = true;
+    },
+    nuevoCielo() { semilla = aleatoria(); fijarSemilla(); snapPend = true; sucio = true; },
+    pausar() { pausado = true; },
+    seguir() { if (pausado) { pausado = false; last = performance.now(); } }
+  };
+
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(redimensionar, 250); });
+
+  semilla = P.semilla > 0 ? P.semilla : aleatoria();
+  fijarSemilla();
+  redimensionar();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<!-- ═══════════ CAPA 0: ESTRELLAS · CAPA 2: RELÁMPAGOS ═══════════ -->
 <script>
 (function(){
-  const canvas = document.getElementById('stars');
-  const ctx    = canvas.getContext('2d');
+  const starCanvas = document.getElementById('stars');
+  const sctx       = starCanvas.getContext('2d');
+  const canvas     = document.getElementById('bolt');
+  const ctx        = canvas.getContext('2d');
 
   const DEPTH  = 9;
   const BRANCH = 0.50;
@@ -524,13 +862,14 @@
   function resize(){
     W = window.innerWidth;
     H = window.innerHeight;
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width  = W + 'px';
-    canvas.style.height = H + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for(const [c, x] of [[starCanvas, sctx], [canvas, ctx]]){
+      c.width  = W * dpr;
+      c.height = H * dpr;
+      c.style.width  = W + 'px';
+      c.style.height = H + 'px';
+      x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
     generateStars();
-    drawScene();
   }
 
   function generateStars(){
@@ -547,24 +886,28 @@
     }
   }
 
+  // Capa 0: cielo y estrellas titilantes
   function drawBackground(){
-    const g = ctx.createLinearGradient(0, 0, 0, H);
+    const g = sctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0,   '#05070f');
     g.addColorStop(0.6, '#0b1226');
     g.addColorStop(1,   '#141b33');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
+    sctx.fillStyle = g;
+    sctx.fillRect(0, 0, W, H);
 
-    ctx.fillStyle = '#cdd9f5';
+    sctx.fillStyle = '#cdd9f5';
     const t = performance.now() / 1000;
     for(const s of stars){
-      const alpha = 0.15 + Math.abs(Math.sin(s.phase + t * s.speed)) * 0.65;
-      ctx.globalAlpha = alpha;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
+      sctx.globalAlpha = 0.15 + Math.abs(Math.sin(s.phase + t * s.speed)) * 0.65;
+      sctx.beginPath();
+      sctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      sctx.fill();
     }
-    ctx.globalAlpha = 1;
+    sctx.globalAlpha = 1;
+  }
+  function starLoop(){
+    drawBackground();
+    requestAnimationFrame(starLoop);
   }
 
   function generateBolt(originX, targetX){
@@ -626,36 +969,39 @@
     ctx.fillRect(0,H*0.4,W,H*0.6);
   }
 
+  // Capa 2: relámpagos (por encima de las nubes, por debajo del texto)
   let bolt=null, boltAlpha=0, flashAlpha=0, strikeX=0;
-  let lastTime=0, rafId=null, starRafId=null;
+  let lastTime=0, rafId=null;
 
-  function drawScene(){
-    drawBackground();
+  function drawBoltScene(){
+    ctx.clearRect(0,0,W,H);
+    ctx.globalAlpha=1;
     drawGroundGlow(boltAlpha,strikeX);
     drawBolt(bolt,boltAlpha);
+    ctx.globalAlpha=1;
     if(flashAlpha>0){
-      ctx.fillStyle=`rgba(180,210,255,${flashAlpha*0.35})`;
+      const g=ctx.createRadialGradient(strikeX,H*0.2,0,strikeX,H*0.2,Math.max(W,H));
+      g.addColorStop(0,`rgba(190,215,255,${flashAlpha*0.28})`);
+      g.addColorStop(1,'rgba(190,215,255,0)');
+      ctx.fillStyle=g;
       ctx.fillRect(0,0,W,H);
     }
-  }
-
-  function starLoop(){
-    if(boltAlpha>0){ starRafId=null; return; }
-    drawScene();
-    starRafId=requestAnimationFrame(starLoop);
+    // El destello también ilumina las nubes desde dentro (shader)
+    const d=window.NubesNoche && window.NubesNoche.destello;
+    if(d){ d.x=strikeX/W; d.y=0.78; d.i=flashAlpha; }
   }
 
   function boltLoop(t){
     const dt=lastTime?(t-lastTime)/1000:0;
     lastTime=t;
     if(boltAlpha>0)  boltAlpha =Math.max(0,boltAlpha -dt/FADE);
-    if(flashAlpha>0) flashAlpha=Math.max(0,flashAlpha-dt/0.12);
-    drawScene();
+    if(flashAlpha>0) flashAlpha=Math.max(0,flashAlpha-dt/0.2);
+    drawBoltScene();
     if(boltAlpha>0||flashAlpha>0){
       rafId=requestAnimationFrame(boltLoop);
     } else {
       bolt=null; lastTime=0; rafId=null;
-      if(!starRafId) starRafId=requestAnimationFrame(starLoop);
+      ctx.clearRect(0,0,W,H);
     }
   }
 
@@ -689,7 +1035,6 @@
     const buffer     = ac.createBuffer(1, bufLen, sampleRate);
     const data       = buffer.getChannelData(0);
 
-    // Precalentamiento para estabilizar el ruido marrón
     let last = 0;
     for(let i = 0; i < 2000; i++){ last = (last + 0.02*(Math.random()*2-1)) / 1.02; }
 
@@ -770,18 +1115,19 @@
     const dist = Math.abs(x - W/2) / (W/2) * 0.7 + Math.random()*0.3;
     playThunder(dist);
 
-    if(starRafId){ cancelAnimationFrame(starRafId); starRafId=null; }
+    // Segundo destello más tenue, como en un relámpago real
+    setTimeout(()=>{ flashAlpha = Math.max(flashAlpha, 0.7); }, 110);
+
     if(!rafId) rafId=requestAnimationFrame(boltLoop);
     setTimeout(strike, Math.random()*4000);
   }
 
   window.addEventListener('resize', resize);
   resize();
-  starRafId = requestAnimationFrame(starLoop);
+  requestAnimationFrame(starLoop);
   setTimeout(strike, Math.random()*4000);
 })();
 </script>
 
 </body>
 </html>
-
